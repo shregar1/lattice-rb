@@ -1,8 +1,9 @@
 # Lattice (Ruby Edition) — Controller Abstraction
+require_relative '../constants/http_status'
 
 module Abstractions
   class BaseController
-    def envelope(data, message = 'Operation completed successfully', response_key = 'SUCCESS', status_code = 200, context = nil)
+    def envelope(data, message = 'Operation completed successfully', response_key = 'SUCCESS', status_code = Constants::HttpStatus::OK, context = nil)
       {
         transactionUrn: context&.request_urn || '',
         status: status_code < 400 ? 'SUCCESS' : 'FAILED',
@@ -17,11 +18,11 @@ module Abstractions
     end
 
     def success(data, message = 'Operation completed successfully', response_key = 'SUCCESS', context = nil)
-      envelope(data, message, response_key, 200, context)
+      envelope(data, message, response_key, Constants::HttpStatus::OK, context)
     end
 
     def created(data, message = 'Resource created successfully', response_key = 'RESOURCE_CREATED', context = nil)
-      envelope(data, message, response_key, 201, context)
+      envelope(data, message, response_key, Constants::HttpStatus::CREATED, context)
     end
   end
 end
